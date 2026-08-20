@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Special Birthday 🎂💖</title>
+    <link rel="icon" type="image/png" href="Logo.jpg">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="background">
+        <div class="stars"></div>
+
+        <span class="bubble bubble1"></span>
+        <span class="bubble bubble2"></span>
+        <span class="bubble bubble3"></span>
+        <span class="bubble bubble4"></span>
+        <span class="bubble bubble5"></span>
+    </div>
+
+    <!-- =========================
+         1. HALAMAN AMPLOP
+    ========================== -->
+
+    <section id="envelopePage" class="page active">
+
+        <div class="envelope-wrapper">
+
+            <div class="envelope" id="envelope">
+
+                <div class="envelope-back"></div>
+
+                <div class="letter">
+                    💌
+                </div>
+
+                <div class="envelope-flap"></div>
+
+                <div class="envelope-front"></div>
+
+            </div>
+
+        </div>
+
+        <h1 class="opening-title">
+            Anda memiliki<br>
+            pesan khusus dari seseorang! 💌
+        </h1>
+
+        <p class="small-text">
+            Ketuk amplop untuk membukanya.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         2. TAHUN LAHIR
+    ========================== -->
+
+    <section id="birthPage" class="page">
+
+    <div class="birth-card">
+
+        <div class="birth-panda">
+            <img src="panda1.gif" alt="Panda">
+        </div>
+
+        <h1>
+            Tahun Lahir Kamu?
+        </h1>
+
+        <p>
+            Masukkan tahun lahirmu untuk melanjutkan 🥳
+        </p>
+
+        <input
+            type="number"
+            id="birthYear"
+            placeholder="Contoh: 2000"
+            min="2000"
+            max="2026"
+        >
+
+        <p id="yearError" class="error"></p>
+
+        <button id="yearButton" class="main-btn">
+            Lanjutkan 💖
+        </button>
+
+    </div>
+
+    </section>
+
+    <!-- =========================
+         3. MEMORY GAME
+    ========================== -->
+
+    <section id="gamePage" class="page">
+
+        <h1>
+            Memory Game 🧠
+        </h1>
+
+        <p class="game-description">
+            Cocokkan semua kartu untuk membuka pesan 💖
+        </p>
+
+        <div
+            id="gameBoard"
+            class="game-board">
+        </div>
+
+        <p
+            id="gameStatus"
+            class="game-status">
+            Temukan semua pasangan!
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         4. UCAPAN ULANG TAHUN
+    ========================== -->
+
+ <section id="birthdayPage" class="page">
+
+    <div class="birthday-card">
+
+        <!-- GIF PANDA -->
+        <div class="birthday-panda">
+            <img src="panda1.gif" alt="Panda">
+        </div>
+
+        <h1 class="birthday-title">
+            Happy Birthday! 🎂
+        </h1>
+
+        <p class="birthday-name">
+        untuk Syah Silva Dwiani
+        </p>
+
+        <div id="message" class="message">
+            Selamat ulang tahun! Semoga di umur yang baru ini kamu selalu diberi kesehatan, kebahagiaan, dan dimudahkan dalam setiap urusan. Semoga apa yang kamu inginkan bisa tercapai, dan semoga hari-harimu ke depannya semakin baik. Nikmati hari spesialmu dan tetap jadi diri kamu sendiri.🎉Selamat ulang tahun! 🎉💖
+        </div>
+
+        <button
+            id="celebrateButton"
+            class="main-btn">
+            Celebrate! 🎉
+        </button>
+
+    </div>
+
+</section>
+
+
+    <!-- CONFETTI -->
+    <div id="confetti"></div>
+
+
+<script>
+
+    /* =================================
+       HALAMAN
+    ================================= */
+
+    const envelopePage =
+        document.getElementById("envelopePage");
+
+    const birthPage =
+        document.getElementById("birthPage");
+
+    const gamePage =
+        document.getElementById("gamePage");
+
+    const birthdayPage =
+        document.getElementById("birthdayPage");
+
+
+    function changePage(oldPage, newPage) {
+
+        oldPage.classList.remove("active");
+
+        setTimeout(() => {
+
+            oldPage.style.display = "none";
+
+            newPage.style.display = "flex";
+
+            setTimeout(() => {
+                newPage.classList.add("active");
+            }, 50);
+
+        }, 450);
+
+    }
+
+
+    /* =================================
+       AMPLOP
+    ================================= */
+
+    const envelope =
+        document.getElementById("envelope");
+
+
+    envelope.addEventListener("click", () => {
+
+        envelope.classList.add("open");
+
+        setTimeout(() => {
+
+            changePage(
+                envelopePage,
+                birthPage
+            );
+
+        }, 1000);
+
+    });
+
+
+    /* =================================
+       TAHUN LAHIR
+    ================================= */
+
+    const birthYear =
+        document.getElementById("birthYear");
+
+    const yearButton =
+        document.getElementById("yearButton");
+
+    const yearError =
+        document.getElementById("yearError");
+
+
+    yearButton.addEventListener("click", checkYear);
+
+
+    birthYear.addEventListener("keydown", (event) => {
+
+        if (event.key === "Enter") {
+            checkYear();
+        }
+
+    });
+
+
+    function checkYear() {
+
+        const year =
+            Number(birthYear.value);
+
+        const currentYear =
+            new Date().getFullYear();
+
+
+        if (
+            !birthYear.value ||
+            year < 1900 ||
+            year > currentYear
+        ) {
+
+            yearError.textContent =
+                "Masukkan tahun lahir yang benar.";
+
+            birthYear.classList.add("shake");
+
+            setTimeout(() => {
+                birthYear.classList.remove("shake");
+            }, 500);
+
+            return;
+        }
+
+
+        yearError.textContent = "";
+
+        localStorage.setItem(
+            "birthYear",
+            year
+        );
+
+
+        changePage(
+            birthPage,
+            gamePage
+        );
+
+
+        setTimeout(() => {
+            startGame();
+        }, 500);
+
+    }
+
+
+    /* =================================
+       MEMORY GAME
+    ================================= */
+
+    const icons = [
+        "❤️",
+        "🎂",
+        "🎁",
+        "🌸",
+        "⭐",
+        "🧸"
+    ];
+
+
+    let cards = [];
+
+    let firstCard = null;
+    let secondCard = null;
+
+    let lockBoard = false;
+
+    let matchedPairs = 0;
+
+
+    function startGame() {
+
+        const board =
+            document.getElementById("gameBoard");
+
+        board.innerHTML = "";
+
+        cards = [...icons, ...icons];
+
+        shuffle(cards);
+
+        firstCard = null;
+        secondCard = null;
+
+        lockBoard = false;
+
+        matchedPairs = 0;
+
+
+        cards.forEach((icon) => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "memory-card";
+
+            card.dataset.icon =
+                icon;
+
+
+            card.innerHTML = `
+
+                <div class="card-inner">
+
+                    <div class="card-front">
+                        💖
+                    </div>
+
+                    <div class="card-back">
+                        ${icon}
+                    </div>
+
+                </div>
+
+            `;
+
+
+            card.addEventListener(
+                "click",
+                flipCard
+            );
+
+
+            board.appendChild(card);
+
+        });
+
+    }
+
+
+    function shuffle(array) {
+
+        for (
+            let i = array.length - 1;
+            i > 0;
+            i--
+        ) {
+
+            const j =
+                Math.floor(
+                    Math.random() * (i + 1)
+                );
+
+            [
+                array[i],
+                array[j]
+            ] =
+            [
+                array[j],
+                array[i]
+            ];
+
+        }
+
+    }
+
+
+    function flipCard() {
+
+        if (lockBoard)
+            return;
+
+        if (this === firstCard)
+            return;
+
+        if (
+            this.classList.contains("matched")
+        )
+            return;
+
+
+        this.classList.add("flipped");
+
+
+        if (!firstCard) {
+
+            firstCard = this;
+
+            return;
+        }
+
+
+        secondCard = this;
+
+        checkMatch();
+
+    }
+
+
+    function checkMatch() {
+
+        const match =
+            firstCard.dataset.icon ===
+            secondCard.dataset.icon;
+
+
+        if (match) {
+
+            firstCard.classList.add(
+                "matched"
+            );
+
+            secondCard.classList.add(
+                "matched"
+            );
+
+            matchedPairs++;
+
+            resetCards();
+
+
+            if (
+                matchedPairs ===
+                icons.length
+            ) {
+
+                document.getElementById(
+                    "gameStatus"
+                ).textContent =
+                    "🎉 Semua kartu berhasil dicocokkan!";
+
+
+                setTimeout(
+                    showBirthday,
+                    1200
+                );
+
+            }
+
+        } else {
+
+            lockBoard = true;
+
+
+            setTimeout(() => {
+
+                firstCard.classList.remove(
+                    "flipped"
+                );
+
+                secondCard.classList.remove(
+                    "flipped"
+                );
+
+                resetCards();
+
+            }, 800);
+
+        }
+
+    }
+
+
+    function resetCards() {
+
+        firstCard = null;
+        secondCard = null;
+
+        lockBoard = false;
+
+    }
+
+
+    /* =================================
+       UCAPAN
+    ================================= */
+
+    function showBirthday() {
+
+        changePage(
+            gamePage,
+            birthdayPage
+        );
+
+
+        setTimeout(() => {
+
+            typeMessage();
+
+        }, 700);
+
+    }
+
+
+    const messageText =
+        "Selamat ulang tahun! Semoga di umur yang baru ini kamu selalu diberi kesehatan, kebahagiaan, dan dimudahkan dalam setiap urusan. Semoga apa yang kamu inginkan bisa tercapai, dan semoga hari-harimu ke depannya semakin baik. Nikmati hari spesialmu dan tetap jadi diri kamu sendiri.🎉Selamat ulang tahun! 🎉💖";
+
+
+    function typeMessage() {
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+        const button =
+            document.getElementById(
+                "celebrateButton"
+            );
+
+
+        message.textContent = "";
+
+        button.classList.add(
+            "hidden"
+        );
+
+
+        let index = 0;
+
+
+        const typing =
+            setInterval(() => {
+
+                message.textContent +=
+                    messageText[index];
+
+                index++;
+
+
+                if (
+                    index >=
+                    messageText.length
+                ) {
+
+                    clearInterval(
+                        typing
+                    );
+
+                    button.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+            }, 35);
+
+    }
+
+
+    /* =================================
+       CELEBRATE
+    ================================= */
+
+    document
+        .getElementById(
+            "celebrateButton"
+        )
+        .addEventListener(
+            "click",
+            createConfetti
+        );
+
+
+    function createConfetti() {
+
+        const container =
+            document.getElementById(
+                "confetti"
+            );
+
+
+        container.innerHTML = "";
+
+
+        const symbols = [
+            "🎉",
+            "🎊",
+            "✨",
+            "💖",
+            "⭐",
+            "🎈",
+            "💗"
+        ];
+
+
+        for (
+            let i = 0;
+            i < 80;
+            i++
+        ) {
+
+            const piece =
+                document.createElement(
+                    "span"
+                );
+
+
+            piece.className =
+                "confetti-piece";
+
+
+            piece.textContent =
+                symbols[
+                    Math.floor(
+                        Math.random() *
+                        symbols.length
+                    )
+                ];
+
+
+            piece.style.left =
+                Math.random() * 100 + "%";
+
+
+            piece.style.animationDelay =
+                Math.random() * 2 + "s";
+
+
+            piece.style.fontSize =
+                14 +
+                Math.random() * 20 +
+                "px";
+
+
+            container.appendChild(
+                piece
+            );
+
+        }
+
+
+        setTimeout(() => {
+
+            container.innerHTML = "";
+
+        }, 6000);
+
+    }
+
+</script>
+
+</body>
+</html>
